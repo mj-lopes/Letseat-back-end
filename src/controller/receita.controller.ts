@@ -60,10 +60,12 @@ class Receita {
     next: NextFunction,
   ): Promise<void> {
     const { ingredientes } = req.body;
-    const arrIngredientesPesquisa: any[] = ingredientes.map((e: string) => {
-      const regex = new RegExp(e, "i");
-      return { ingredientes: regex };
-    });
+    const arrIngredientesPesquisa: any[] = ingredientes.map(
+      (ingrediente: string) => {
+        const rgx = new RegExp(ingrediente, "i");
+        return { ingredientes: rgx };
+      },
+    );
 
     const resultadoQuery = await receitaModel.find({
       $and: arrIngredientesPesquisa,

@@ -13,6 +13,6 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const port = 5000;
 app.get("/", receita_controller_1.default.pegarTodasReceitas);
-app.post("/:nomeReceita", receita_controller_1.default.pegarReceitaPeloNome);
+app.post("/", receita_controller_1.default.pegarReceitaPorIngredientes);
 database_1.default.connect();
 app.listen(port, () => console.log("App rodando na porta 5000"));

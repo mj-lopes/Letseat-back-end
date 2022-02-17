@@ -26,5 +26,16 @@ class Receita {
             res.sendStatus(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+    async pegarReceitaPorIngredientes(req, res, next) {
+        const { ingredientes } = req.body;
+        const arrIngredientesPesquisa = ingredientes.map((e) => {
+            const regex = new RegExp(e, "i");
+            return { ingredientes: regex };
+        });
+        const resultadoQuery = await receitaSchema_1.receitaModel.find({
+            $and: arrIngredientesPesquisa,
+        });
+        res.status(200).send(resultadoQuery);
+    }
 }
 exports.default = new Receita();

@@ -12,8 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 const port = 5000;
 
 app.get("/", rc.pegarTodasReceitas);
+app.post("/", rc.pegarReceitaPorIngredientes);
 
-app.post("/:nomeReceita", rc.pegarReceitaPeloNome);
+// app.post("/:nomeReceita", rc.pegarReceitaPeloNome);
 
 database.connect();
 

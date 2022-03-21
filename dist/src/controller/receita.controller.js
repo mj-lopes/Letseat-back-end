@@ -28,9 +28,9 @@ class Receita {
     }
     async pegarReceitaPorIngredientes(req, res, next) {
         const { ingredientes } = req.body;
-        const arrIngredientesPesquisa = ingredientes.map((e) => {
-            const regex = new RegExp(e, "i");
-            return { ingredientes: regex };
+        const arrIngredientesPesquisa = ingredientes.map((ingrediente) => {
+            const rgx = new RegExp(ingrediente, "i");
+            return { ingredientes: rgx };
         });
         const resultadoQuery = await receitaSchema_1.receitaModel.find({
             $and: arrIngredientesPesquisa,

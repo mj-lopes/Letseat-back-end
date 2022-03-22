@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node ./dist/src/index.js",
     "postinstall": "tsc",
-    "build": "tsc --watch",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts"
   },
   "author": "Marcos Junior",

@@ -96,7 +96,7 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send(respostaQuery);
+      res.status(StatusCodes.OK).send({ respostaQuery });
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -108,40 +108,49 @@ class Receita {
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    const { ingredientes } = req.body;
+    try {
+      const { ingredientes } = req.body;
 
-    let page = 1;
-    let limite = 12;
+      let page = 1;
+      let limite = 12;
 
-    if (req.query && req.query.page && typeof req.query.page === "string") {
-      page = Number.parseInt(req.query.page);
+      if (req.query && req.query.page && typeof req.query.page === "string") {
+        page = Number.parseInt(req.query.page);
+      }
+
+      if (
+        req.query &&
+        req.query.limite &&
+        typeof req.query.limite === "string"
+      ) {
+        limite = Number.parseInt(req.query.limite);
+      }
+
+      const arrIngredientesPesquisa: any[] = ingredientes.map(
+        (ingrediente: string) => {
+          const rgx = new RegExp(ingrediente, "i");
+          return { ingredientes: rgx };
+        },
+      );
+
+      const respostaQuery = await receitaModel
+        .find({
+          $and: arrIngredientesPesquisa,
+        })
+        .skip(limite * (page - 1))
+        .limit(limite)
+        .exec();
+
+      if (!respostaQuery.length) {
+        res.sendStatus(StatusCodes.NO_CONTENT);
+        return;
+      }
+
+      res.status(StatusCodes.OK).send({ respostaQuery });
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
-
-    if (req.query && req.query.limite && typeof req.query.limite === "string") {
-      limite = Number.parseInt(req.query.limite);
-    }
-
-    const arrIngredientesPesquisa: any[] = ingredientes.map(
-      (ingrediente: string) => {
-        const rgx = new RegExp(ingrediente, "i");
-        return { ingredientes: rgx };
-      },
-    );
-
-    const respostaQuery = await receitaModel
-      .find({
-        $and: arrIngredientesPesquisa,
-      })
-      .skip(limite * (page - 1))
-      .limit(limite)
-      .exec();
-
-    if (!respostaQuery.length) {
-      res.sendStatus(StatusCodes.NO_CONTENT);
-      return;
-    }
-
-    res.status(StatusCodes.OK).send(respostaQuery);
   }
 }
 

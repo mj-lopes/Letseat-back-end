@@ -8,5 +8,7 @@ const receitaSchema = new mongoose_1.Schema({
     rendimento: { required: true, type: String },
     ingredientes: { required: true, type: [String] },
     instrucoes: { required: true, type: [String] },
+    imgUrl: { required: false, type: String },
+    classificacao: { required: true, type: [String] },
 });
 exports.receitaModel = (0, mongoose_1.model)("receitas", receitaSchema);

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import receitas from "../../receitas.json";
 import { receita, receitaModel } from "../database/model/receitaSchema";
 
 class Receita {
@@ -38,21 +37,21 @@ class Receita {
     }
   }
 
-  async salvarReceita(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const novaReceita: receita[] = receitas;
-      await receitaModel.insertMany(novaReceita);
+  // async salvarReceita(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction,
+  // ): Promise<void> {
+  //   try {
+  //     const novaReceita: receita[] = receitas;
+  //     await receitaModel.insertMany(novaReceita);
 
-      res.sendStatus(StatusCodes.CREATED);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
-  }
+  //     res.sendStatus(StatusCodes.CREATED);
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  //   }
+  // }
 
   async pegarReceitaPeloNome(
     req: Request<{ nomeReceita: string; limite: string; page: string }>,

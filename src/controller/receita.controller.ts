@@ -30,6 +30,11 @@ class Receita {
         .limit(limite)
         .exec();
 
+      if (!respostaQuery.length) {
+        res.sendStatus(StatusCodes.NO_CONTENT);
+        return;
+      }
+
       res.status(StatusCodes.OK).send({ respostaQuery });
     } catch (err) {
       console.log(err);
@@ -86,7 +91,12 @@ class Receita {
         .limit(limite)
         .exec();
 
-      res.status(StatusCodes.ACCEPTED).send(respostaQuery);
+      if (!respostaQuery.length) {
+        res.sendStatus(StatusCodes.NO_CONTENT);
+        return;
+      }
+
+      res.status(StatusCodes.OK).send(respostaQuery);
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -118,7 +128,7 @@ class Receita {
       },
     );
 
-    const resultadoQuery = await receitaModel
+    const respostaQuery = await receitaModel
       .find({
         $and: arrIngredientesPesquisa,
       })
@@ -126,7 +136,12 @@ class Receita {
       .limit(limite)
       .exec();
 
-    res.status(200).send(resultadoQuery);
+    if (!respostaQuery.length) {
+      res.sendStatus(StatusCodes.NO_CONTENT);
+      return;
+    }
+
+    res.status(StatusCodes.OK).send(respostaQuery);
   }
 }
 

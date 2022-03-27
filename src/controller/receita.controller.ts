@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { receita, receitaModel } from "../database/model/receitaSchema";
-import receitas from "../../receitas.json";
+import { receitaModel } from "../database/model/receitaSchema";
+// import receitas from "../../receitas.json";
 
 class Receita {
   async pegarTodasReceitas(

@@ -1,12 +1,12 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { receita, receitaModel } from "../database/model/receitaSchema";
+import receitas from "../../receitas.json";
 
 class Receita {
   async pegarTodasReceitas(
     req: Request<{ page: string; limite: string }>,
     res: Response,
-    next: NextFunction,
   ): Promise<void> {
     try {
       let page = 1;
@@ -42,13 +42,9 @@ class Receita {
     }
   }
 
-  // async salvarReceita(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ): Promise<void> {
+  // async salvarReceitas(req: Request, res: Response): Promise<void> {
   //   try {
-  //     const novaReceita: receita[] = receitas;
+  //     const novaReceita = receitas;
   //     await receitaModel.insertMany(novaReceita);
 
   //     res.sendStatus(StatusCodes.CREATED);
@@ -58,10 +54,9 @@ class Receita {
   //   }
   // }
 
-  async pegarReceitaPeloNome(
+  async pesquisarPorNome(
     req: Request<{ nomeReceita: string; limite: string; page: string }>,
     res: Response,
-    next: NextFunction,
   ): Promise<void> {
     try {
       const nomeReceita = req.params.nomeReceita;
@@ -103,10 +98,9 @@ class Receita {
     }
   }
 
-  async pegarReceitaPorIngredientes(
+  async pesquisarPorIngredientes(
     req: Request<{ page: string; limite: string }>,
     res: Response,
-    next: NextFunction,
   ): Promise<void> {
     try {
       const { ingredientes } = req.body;
@@ -150,6 +144,48 @@ class Receita {
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async pesquisarPorCategoria(
+    req: Request<{ categoria: string }>,
+    res: Response,
+  ) {
+    try {
+      const categoria = req.params.categoria.replace(/\+/g, " ");
+      const rgxCategoria = new RegExp(categoria, "i");
+
+      let page = 1;
+      let limite = 12;
+
+      if (req.query && req.query.page && typeof req.query.page === "string") {
+        page = Number.parseInt(req.query.page);
+      }
+
+      if (
+        req.query &&
+        req.query.limite &&
+        typeof req.query.limite === "string"
+      ) {
+        limite = Number.parseInt(req.query.limite);
+      }
+
+      const respostaQuery = await receitaModel
+        .find({ categoria: { $regex: rgxCategoria } })
+        .skip(limite * (page - 1))
+        .limit(limite)
+        .exec();
+
+      if (!respostaQuery.length) {
+        res.sendStatus(StatusCodes.NO_CONTENT);
+        return;
+      }
+
+      res.status(StatusCodes.OK).send({ respostaQuery });
+    } catch (err) {
+      console.log(err);
+
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ erro: err });
     }
   }
 }

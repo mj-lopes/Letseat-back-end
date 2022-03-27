@@ -188,6 +188,20 @@ class Receita {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ erro: err });
     }
   }
+
+  async pegarReceitasPorId(req: Request<{ idReceita: string }>, res: Response) {
+    try {
+      const { idReceita } = req.params;
+
+      const respostaQuery = await receitaModel.findById(idReceita);
+
+      if (!respostaQuery) res.sendStatus(StatusCodes.NO_CONTENT);
+
+      res.status(StatusCodes.OK).send(respostaQuery);
+    } catch (err) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ erro: err });
+    }
+  }
 }
 
 export default new Receita();

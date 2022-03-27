@@ -8,6 +8,6 @@ routerReceitas.get("/", rc.pegarTodasReceitas);
 routerReceitas.post("/ingredientes", rc.pesquisarPorIngredientes);
 routerReceitas.get("/categoria/:categoria", rc.pesquisarPorCategoria);
 routerReceitas.get("/receitas/:nomeReceita", rc.pesquisarPorNome);
-// routerReceitas.get("/receita/:idReceita", rc.pegarReceitaPeloID);
+routerReceitas.get("/receita/:idReceita", rc.pegarReceitasPorId);
 
 export default routerReceitas;

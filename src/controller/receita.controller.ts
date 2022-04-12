@@ -11,6 +11,8 @@ class Receita {
     try {
       let page = 1;
       let limite = 12;
+      const estrelas = req.body.filtros?.estrelas || 0;
+      const tempoMaximoPreparo = req.body.filtros?.tempoMaximoPreparo || 9999;
 
       if (req.query && req.query.page && typeof req.query.page === "string") {
         page = Number.parseInt(req.query.page);
@@ -24,8 +26,13 @@ class Receita {
         limite = Number.parseInt(req.query.limite);
       }
 
+      const filtrosQuery = [
+        { classificacao: { $gte: estrelas } },
+        { preparo: { $lte: tempoMaximoPreparo } },
+      ];
+
       const respostaQuery = await receitaModel
-        .find()
+        .find({ $and: filtrosQuery })
         .skip(limite * (page - 1))
         .limit(limite)
         .exec();
@@ -118,8 +125,6 @@ class Receita {
 
       let page = 1;
       let limite = 12;
-
-      console.log(estrelas, tempoMaximoPreparo);
 
       if (req.query && req.query.page && typeof req.query.page === "string") {
         page = Number.parseInt(req.query.page);

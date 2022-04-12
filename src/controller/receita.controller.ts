@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { receitaModel } from "../database/model/receitaSchema";
-import receitas from "../../receitas.json";
+// import receitas from "../../receitas.json";
 
 class Receita {
   async pegarTodasReceitas(
@@ -49,17 +49,17 @@ class Receita {
     }
   }
 
-  async salvarReceitas(req: Request, res: Response): Promise<void> {
-    try {
-      const novaReceita = receitas;
-      await receitaModel.insertMany(novaReceita);
+  // async salvarReceitas(req: Request, res: Response): Promise<void> {
+  //   try {
+  //     const novaReceita = receitas;
+  //     await receitaModel.insertMany(novaReceita);
 
-      res.sendStatus(StatusCodes.CREATED);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-    }
-  }
+  //     res.sendStatus(StatusCodes.CREATED);
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  //   }
+  // }
 
   async pesquisarPorNome(
     req: Request<{ nomeReceita: string; limite: string; page: string }>,

@@ -3,23 +3,23 @@ import { model, Schema } from "mongoose";
 export interface receita {
   titulo: string;
   categoria: string;
-  classificacao: string[];
+  classificacao: number;
   imgUrl: string;
-  preparo: string;
+  preparo: number;
   rendimento: string;
   ingredientes: string[];
   instrucoes: string[];
 }
 
 const receitaSchema = new Schema<receita>({
-  titulo: { required: true, type: String },
-  categoria: { required: true, type: String },
-  classificacao: { required: true, type: [String] },
-  imgUrl: { required: false, type: String },
-  preparo: { required: true, type: String },
-  rendimento: { required: true, type: String },
-  ingredientes: { required: true, type: [String] },
-  instrucoes: { required: true, type: [String] },
+  titulo: { required: true, type: "string" },
+  categoria: { required: true, type: "string" },
+  classificacao: { required: true, type: "Number" },
+  imgUrl: { required: false, type: "string" },
+  preparo: { required: false, type: "Number" },
+  rendimento: { required: true, type: "string" },
+  ingredientes: { required: true, type: ["string"] },
+  instrucoes: { required: true, type: ["string"] },
 });
 
 export const receitaModel = model<receita>("receitas", receitaSchema);

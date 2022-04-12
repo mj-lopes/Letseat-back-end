@@ -69,6 +69,8 @@ class Receita {
       const nomeReceita = req.params.nomeReceita;
       let page = 1;
       let limite = 12;
+      const estrelas = req.body.filtros?.estrelas || 0;
+      const tempoMaximoPreparo = req.body.filtros?.tempoMaximoPreparo || 9999;
 
       if (req.query && req.query.page && typeof req.query.page === "string") {
         page = Number.parseInt(req.query.page);
@@ -87,8 +89,14 @@ class Receita {
         return { titulo: rgx };
       });
 
+      const filtrosQuery = [
+        ...termosBusca,
+        { classificacao: { $gte: estrelas } },
+        { preparo: { $lte: tempoMaximoPreparo } },
+      ];
+
       const respostaQuery = await receitaModel
-        .find({ $and: termosBusca })
+        .find({ $and: filtrosQuery })
         .skip(limite * (page - 1))
         .limit(limite)
         .exec();
@@ -145,7 +153,7 @@ class Receita {
         },
       );
 
-      const filtroQuery: any[] = [
+      const filtrosQuery: any[] = [
         ...arrIngredientesPesquisa,
         { classificacao: { $gte: estrelas } },
         { preparo: { $lte: tempoMaximoPreparo } },
@@ -153,7 +161,7 @@ class Receita {
 
       const respostaQuery = await receitaModel
         .find({
-          $and: filtroQuery,
+          $and: filtrosQuery,
         })
         .skip(limite * (page - 1))
         .limit(limite)
@@ -178,6 +186,8 @@ class Receita {
     try {
       const categoria = req.params.categoria.replace(/\+/g, " ");
       const rgxCategoria = new RegExp(categoria, "i");
+      const estrelas = req.body.filtros?.estrelas || 0;
+      const tempoMaximoPreparo = req.body.filtros?.tempoMaximoPreparo || 9999;
 
       let page = 1;
       let limite = 12;
@@ -194,8 +204,13 @@ class Receita {
         limite = Number.parseInt(req.query.limite);
       }
 
+      const filtrosQuery: any[] = [
+        { classificacao: { $gte: estrelas } },
+        { preparo: { $lte: tempoMaximoPreparo } },
+      ];
+
       const respostaQuery = await receitaModel
-        .find({ categoria: { $regex: rgxCategoria } })
+        .find({ categoria: { $regex: rgxCategoria }, $and: filtrosQuery })
         .skip(limite * (page - 1))
         .limit(limite)
         .exec();

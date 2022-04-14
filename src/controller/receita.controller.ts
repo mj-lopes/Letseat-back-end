@@ -106,7 +106,7 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send({ respostaQuery });
+      res.status(StatusCodes.OK).send(respostaQuery);
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -172,7 +172,7 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send({ respostaQuery });
+      res.status(StatusCodes.OK).send(respostaQuery);
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -220,7 +220,7 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send({ respostaQuery });
+      res.status(StatusCodes.OK).send(respostaQuery);
     } catch (err) {
       console.log(err);
 

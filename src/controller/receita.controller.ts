@@ -42,7 +42,9 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send({ respostaQuery });
+      const totalQuery = await receitaModel.count({ $and: filtrosQuery });
+
+      res.status(StatusCodes.OK).send({ total: totalQuery, respostaQuery });
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -101,12 +103,14 @@ class Receita {
         .limit(limite)
         .exec();
 
+      const totalQuery = await receitaModel.count({ $and: filtrosQuery });
+
       if (!respostaQuery.length) {
         res.sendStatus(StatusCodes.NO_CONTENT);
         return;
       }
 
-      res.status(StatusCodes.OK).send(respostaQuery);
+      res.status(StatusCodes.OK).send({ total: totalQuery, respostaQuery });
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -172,7 +176,9 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send(respostaQuery);
+      const totalQuery = await receitaModel.count({ $and: filtrosQuery });
+
+      res.status(StatusCodes.OK).send({ total: totalQuery, respostaQuery });
     } catch (err) {
       console.log(err);
       res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -220,7 +226,9 @@ class Receita {
         return;
       }
 
-      res.status(StatusCodes.OK).send(respostaQuery);
+      const totalQuery = await receitaModel.count({ $and: filtrosQuery });
+
+      res.status(StatusCodes.OK).send({ total: totalQuery, respostaQuery });
     } catch (err) {
       console.log(err);
 

@@ -211,12 +211,13 @@ class Receita {
       }
 
       const filtrosQuery: any[] = [
+        { categoria: { $regex: rgxCategoria } },
         { classificacao: { $gte: estrelas } },
         { preparo: { $lte: tempoMaximoPreparo } },
       ];
 
       const respostaQuery = await receitaModel
-        .find({ categoria: { $regex: rgxCategoria }, $and: filtrosQuery })
+        .find({ $and: filtrosQuery })
         .skip(limite * (page - 1))
         .limit(limite)
         .exec();
